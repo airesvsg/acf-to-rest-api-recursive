@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'ACF_To_REST_API_Recursive' ) ) {
 	class ACF_To_REST_API_Recursive {
+
+		protected static $recursedPosts = [];
+		public static $postRecursionDepth = 1;
+
 		public static function init() {
 			self::hooks();
 		}
@@ -18,9 +22,9 @@ if ( ! class_exists( 'ACF_To_REST_API_Recursive' ) ) {
 
 		protected static function get_types() {
 			$types = array(
-				'options'  => 'options',
-				'comments' => 'comments',
-				'users'    => 'users',
+				'options'     => 'options',
+				'comments'    => 'comments',
+				'users'       => 'users'
 			);
 
 			$types += (array) get_post_types( array( 'show_in_rest' => true ) );
@@ -47,11 +51,15 @@ if ( ! class_exists( 'ACF_To_REST_API_Recursive' ) ) {
 
 		public static function get_fields_recursive( $item ) {
 			if ( is_object( $item ) ) {
+				if (get_class($item) === 'WP_Post') {
+					static::$recursedPosts[$item->ID] = static::$recursedPosts[$item->ID] ?? 0;
+					static::$recursedPosts[$item->ID]++;
+				}
 				$item->acf = array();
-
+				$depth = $item->depth ?? 0;
 				$fields = get_fields( $item );
 
-				if ( $fields ) {
+				if ( $fields && static::$recursedPosts[$item->ID] < static::$postRecursionDepth ) {
 					$item->acf = $fields;
 					array_walk_recursive( $item->acf, array( __CLASS__, 'get_fields_recursive' ) );
 				}
