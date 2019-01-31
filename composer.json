@@ -1,0 +1,12 @@
+{
+  "name": "airesvsg/acf-to-rest-api-recursive",
+  "type": "wordpress-plugin",
+  "homepage": "https://github.com/airesvsg/acf-to-rest-api-recursive",
+  "license": "GPL-2.0",
+  "description": "Get ACF fields recursively",
+  "keywords": ["plugin","wordpress","acf","recursive"],
+  "require": {
+    "php": ">=7.1",
+    "composer/installers": "~1.5"
+  }
+}
