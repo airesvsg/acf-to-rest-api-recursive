@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "keywords": ["plugin", "wordpress", "wp", "acf", "recursive", "rest-api"],
   "homepage": "https://github.com/airesvsg/acf-to-rest-api-recursive",
-  "license": "GPLv2.0",
+  "license": "GPL-2.0-only",
   "authors": [
     {
       "name": "Aires Gonçalves",
